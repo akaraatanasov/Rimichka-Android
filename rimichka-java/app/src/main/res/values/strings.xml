@@ -2,4 +2,5 @@
     <string name="app_name">Rimichka</string>
     <string name="title_search">Рими</string>
     <string name="title_favorites">Любими</string>
+    <string name="search_hint">Потърси дума на кирилица ...</string>
 </resources>
