@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--    android:text="@={viewModel.searchQuery}"-->
     <EditText
         android:id="@+id/search_edit_text"
         android:layout_width="0dp"
@@ -37,6 +36,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_edit_text" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

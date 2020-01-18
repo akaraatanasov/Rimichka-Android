@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -52,8 +53,16 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                TextView rhymeText = holder.itemView.findViewById(R.id.recycler_view_item_text_view);
+                TextView rhymeText = holder.itemView.findViewById(R.id.rhyme_text);
                 rhymeText.setText(searchViewModel.getRhymeList().getValue().get(position).wrd);
+
+                ImageButton rhymeButton = holder.itemView.findViewById(R.id.rhyme_button);
+                rhymeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        rhymeButton.setImageResource(R.drawable.ic_favorite);
+                    }
+                });
             }
 
             @Override
