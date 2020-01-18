@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nbu.rimichka.R;
 import com.nbu.rimichka.models.Rhyme;
-
 import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
@@ -61,6 +60,11 @@ public class SearchFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         rhymeButton.setImageResource(R.drawable.ic_favorite);
+
+                        String word = searchEditText.getText().toString();
+                        String rhyme = rhymeText.getText().toString();
+
+                        System.out.println(word + " -> " + rhyme);
                     }
                 });
             }
