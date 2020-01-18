@@ -1,6 +1,6 @@
 package com.nbu.rimichka.networking;
 
-import com.nbu.rimichka.models.RhymeResponse;
+import com.nbu.rimichka.models.Rhyme;
 
 import java.util.List;
 
@@ -10,5 +10,5 @@ import retrofit2.http.Query;
 
 public interface RimichkaApiService  {
     @GET("/?json=1")
-    Call<List<RhymeResponse>> fetchRhymesAsync(@Query("word") String word);
+    Call<List<Rhyme>> fetchRhymesAsync(@Query("word") String word);
 }

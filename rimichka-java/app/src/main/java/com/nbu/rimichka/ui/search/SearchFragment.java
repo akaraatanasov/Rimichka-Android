@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nbu.rimichka.R;
-import com.nbu.rimichka.models.RhymeResponse;
+import com.nbu.rimichka.models.Rhyme;
 
 import java.util.ArrayList;
 
@@ -81,9 +81,9 @@ public class SearchFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
-        searchViewModel.getRhymeList().observe(this, new Observer<ArrayList<RhymeResponse>>() {
+        searchViewModel.getRhymeList().observe(this, new Observer<ArrayList<Rhyme>>() {
             @Override
-            public void onChanged(ArrayList<RhymeResponse> rhymeResponses) {
+            public void onChanged(ArrayList<Rhyme> rhymeResponses) {
                 recyclerView.getAdapter().notifyDataSetChanged();
                 System.out.println("I was changed! ⚠️");
             }
