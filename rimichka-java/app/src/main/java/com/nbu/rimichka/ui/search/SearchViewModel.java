@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.nbu.rimichka.models.Rhyme;
-import com.nbu.rimichka.networking.RimichkaApi;
+import com.nbu.rimichka.network.RimichkaApi;
 
 import java.util.ArrayList;
 import java.util.Collections;

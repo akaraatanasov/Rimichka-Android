@@ -1,4 +1,4 @@
-package com.nbu.rimichka.networking;
+package com.nbu.rimichka.network;
 
 import com.nbu.rimichka.models.Rhyme;
 

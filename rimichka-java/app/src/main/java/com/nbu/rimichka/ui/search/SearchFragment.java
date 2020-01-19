@@ -37,6 +37,20 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+        searchViewModel.getRhymeList().observe(this, new Observer<ArrayList<Rhyme>>() {
+            @Override
+            public void onChanged(ArrayList<Rhyme> rhymeResponses) {
+                recyclerView.getAdapter().notifyDataSetChanged();
+                System.out.println("I was changed! ⚠️");
+            }
+        });
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -89,25 +103,6 @@ public class SearchFragment extends Fragment {
 
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
-        searchViewModel.getRhymeList().observe(this, new Observer<ArrayList<Rhyme>>() {
-            @Override
-            public void onChanged(ArrayList<Rhyme> rhymeResponses) {
-                recyclerView.getAdapter().notifyDataSetChanged();
-                System.out.println("I was changed! ⚠️");
-            }
-        });
-    }
-
-
-
-
-
-
     private void onTapSearchButton() {
         String query = searchEditText.getText().toString();
         searchViewModel.executeSearch(query);
@@ -116,14 +111,7 @@ public class SearchFragment extends Fragment {
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
-
-
-
-
-
-
     private class AdapterViewHolder extends RecyclerView.ViewHolder {
-
         public View itemView;
 
         AdapterViewHolder(View itemView) {
