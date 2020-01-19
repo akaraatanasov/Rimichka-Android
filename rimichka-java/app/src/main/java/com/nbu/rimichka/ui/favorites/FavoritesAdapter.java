@@ -26,15 +26,12 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
     }
 
     private final LayoutInflater inflater;
-    private List<RhymePair> pairs;
+    private FavoritesViewModel viewModel;
 
-    FavoritesAdapter(Context context) {
-        inflater = LayoutInflater.from(context);
-    }
 
-    public void setPairs(List<RhymePair> pairs) {
-        this.pairs = pairs;
-        notifyDataSetChanged();
+    FavoritesAdapter(Context context, FavoritesViewModel viewModel) {
+        this.inflater = LayoutInflater.from(context);
+        this.viewModel = viewModel;
     }
 
     @Override
@@ -45,8 +42,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
     @Override
     public void onBindViewHolder(FavoritesViewHolder holder, int position) {
-        if (pairs != null) {
-            RhymePair pair = pairs.get(position);
+        if (viewModel.getAllRhymePairs().getValue() != null) {
+            RhymePair pair = viewModel.getAllRhymePairs().getValue().get(position);
 
             TextView rhymeText = holder.itemView.findViewById(R.id.rhyme_text);
             rhymeText.setText(pair.getWord() + " -> " + pair.getRhyme());
@@ -56,7 +53,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
             rhymeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //
+                    rhymeButton.setImageResource(R.drawable.ic_favorite_border);
+
+                    viewModel.delete(pair);
+                    notifyDataSetChanged();
+
                     System.out.println(pair + " removed from favorites!");
                 }
             });
@@ -68,8 +69,8 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
     @Override
     public int getItemCount() {
-        if (pairs != null)
-            return pairs.size();
+        if (viewModel.getAllRhymePairs().getValue() != null)
+            return viewModel.getAllRhymePairs().getValue().size();
         else return 0;
     }
 

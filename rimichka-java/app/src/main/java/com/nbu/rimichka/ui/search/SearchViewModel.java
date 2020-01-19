@@ -27,7 +27,7 @@ public class SearchViewModel extends ViewModel {
         rhymeList.setValue(new ArrayList<>());
     }
 
-    public LiveData<ArrayList<Rhyme>> getRhymeList() {
+    LiveData<ArrayList<Rhyme>> getRhymeList() {
         return rhymeList;
     }
 

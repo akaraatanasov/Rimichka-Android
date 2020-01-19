@@ -34,25 +34,25 @@ public class FavoritesFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
-        favoritesViewModel.getAllRhymePairs().observe(this, new Observer<List<RhymePair>>() {
-            @Override
-            public void onChanged(List<RhymePair> rhymePairs) {
-                favoritesAdapter.setPairs(rhymePairs);
-            }
-        });
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        favoritesAdapter = new FavoritesAdapter(getContext());
+        favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel.class);
+        favoritesAdapter = new FavoritesAdapter(getContext(), favoritesViewModel);
         recyclerView = view.findViewById(R.id.favorites_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(favoritesAdapter);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        favoritesViewModel.getAllRhymePairs().observe(this, new Observer<List<RhymePair>>() {
+            @Override
+            public void onChanged(List<RhymePair> rhymePairs) {
+                favoritesAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }
