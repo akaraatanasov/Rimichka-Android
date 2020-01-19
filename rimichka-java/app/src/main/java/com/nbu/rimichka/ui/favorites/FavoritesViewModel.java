@@ -15,6 +15,7 @@ import java.util.List;
 public class FavoritesViewModel extends AndroidViewModel {
 
     private RhymePairsRepository repository;
+
     private LiveData<List<RhymePair>> allRhymePairs;
 
     public FavoritesViewModel(Application application) {
@@ -25,8 +26,6 @@ public class FavoritesViewModel extends AndroidViewModel {
 
     LiveData<List<RhymePair>> getAllRhymePairs() { return allRhymePairs; }
 
-    public void insert(RhymePair pair) { repository.insert(pair); }
-
-    public void delete(RhymePair pair) { repository.delete(pair); }
+    void delete(RhymePair pair) { repository.delete(pair); }
 
 }

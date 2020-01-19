@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
 
+    private SearchAdapter searchAdapter;
     private SearchViewModel searchViewModel;
 
     private EditText searchEditText;
@@ -37,57 +38,14 @@ public class SearchFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
-        searchViewModel.getRhymeList().observe(this, new Observer<ArrayList<Rhyme>>() {
-            @Override
-            public void onChanged(ArrayList<Rhyme> rhymeResponses) {
-                recyclerView.getAdapter().notifyDataSetChanged();
-                System.out.println("I was changed! ⚠️");
-            }
-        });
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);
+        searchAdapter = new SearchAdapter(getContext(), searchViewModel);
         recyclerView = view.findViewById(R.id.search_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new RecyclerView.Adapter() {
-            @NonNull
-            @Override
-            public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View createdView = LayoutInflater.from(getContext()).inflate(R.layout.rhyme_view_item, parent, false);
-                return new AdapterViewHolder(createdView);
-            }
-
-            @Override
-            public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-                TextView rhymeText = holder.itemView.findViewById(R.id.rhyme_text);
-                rhymeText.setText(searchViewModel.getRhymeList().getValue().get(position).wrd);
-
-                ImageButton rhymeButton = holder.itemView.findViewById(R.id.rhyme_button);
-                rhymeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        rhymeButton.setImageResource(R.drawable.ic_favorite);
-
-                        String word = searchEditText.getText().toString();
-                        String rhyme = rhymeText.getText().toString();
-
-                        System.out.println(word + " -> " + rhyme);
-                    }
-                });
-            }
-
-            @Override
-            public int getItemCount() {
-                return searchViewModel.getRhymeList().getValue().size();
-            }
-        });
+        recyclerView.setAdapter(searchAdapter);
 
         searchEditText = view.findViewById(R.id.search_edit_text);
         searchEditText.setOnKeyListener(new View.OnKeyListener() {
@@ -100,7 +58,18 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        searchViewModel.getRhymeList().observe(this, new Observer<ArrayList<Rhyme>>() {
+            @Override
+            public void onChanged(ArrayList<Rhyme> rhymeResponses) {
+                searchAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private void onTapSearchButton() {
@@ -109,14 +78,5 @@ public class SearchFragment extends Fragment {
 
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-    }
-
-    private class AdapterViewHolder extends RecyclerView.ViewHolder {
-        public View itemView;
-
-        AdapterViewHolder(View itemView) {
-            super(itemView);
-            this.itemView = itemView;
-        }
     }
 }

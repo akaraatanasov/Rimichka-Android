@@ -1,13 +1,17 @@
 package com.nbu.rimichka.ui.search;
 
+import android.app.Application;
 import android.util.Log;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.nbu.rimichka.models.Rhyme;
+import com.nbu.rimichka.models.RhymePair;
 import com.nbu.rimichka.network.RimichkaApi;
+import com.nbu.rimichka.repository.RhymePairsRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,11 +22,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchViewModel extends ViewModel {
+public class SearchViewModel extends AndroidViewModel {
+
+    private RhymePairsRepository repository;
+
+    private String lastSearchedWord;
 
     private MutableLiveData<ArrayList<Rhyme>> rhymeList;
 
-    public SearchViewModel() {
+    public SearchViewModel(Application application) {
+        super(application);
+        repository = new RhymePairsRepository(application);
+        lastSearchedWord = "";
         rhymeList = new MutableLiveData<ArrayList<Rhyme>>();
         rhymeList.setValue(new ArrayList<>());
     }
@@ -31,9 +42,14 @@ public class SearchViewModel extends ViewModel {
         return rhymeList;
     }
 
-    void executeSearch(String word) {
-        Call<List<Rhyme>> apiCall = RimichkaApi.getInstance().getService().fetchRhymesAsync(word);
+    void insert(String rhyme) {
+        repository.insert(new RhymePair(0, lastSearchedWord, rhyme));
+    }
 
+    void executeSearch(String word) {
+        lastSearchedWord = word;
+
+        Call<List<Rhyme>> apiCall = RimichkaApi.getInstance().getService().fetchRhymesAsync(word);
         apiCall.enqueue(new Callback<List<Rhyme>>() {
             @Override
             public void onResponse(Call<List<Rhyme>> call, Response<List<Rhyme>> response) {
@@ -67,5 +83,4 @@ public class SearchViewModel extends ViewModel {
 
         return filteredRhymes;
     }
-
 }

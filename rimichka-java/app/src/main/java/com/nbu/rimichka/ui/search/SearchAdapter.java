@@ -1,4 +1,4 @@
-package com.nbu.rimichka.ui.favorites;
+package com.nbu.rimichka.ui.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,59 +12,56 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.nbu.rimichka.R;
 import com.nbu.rimichka.models.RhymePair;
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavoritesViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
 
-    class FavoritesViewHolder extends RecyclerView.ViewHolder {
+    class SearchViewHolder extends RecyclerView.ViewHolder {
         public View itemView;
 
-        FavoritesViewHolder(View itemView) {
+        SearchViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
         }
     }
 
     private final LayoutInflater inflater;
-    private FavoritesViewModel viewModel;
+    private SearchViewModel viewModel;
 
-    FavoritesAdapter(Context context, FavoritesViewModel viewModel) {
+    SearchAdapter(Context context, SearchViewModel viewModel) {
         this.inflater = LayoutInflater.from(context);
         this.viewModel = viewModel;
     }
 
     @Override
-    public FavoritesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View createdView = inflater.inflate(R.layout.rhyme_view_item, parent, false);
-        return new FavoritesViewHolder(createdView);
+        return new SearchViewHolder(createdView);
     }
 
     @Override
-    public void onBindViewHolder(FavoritesViewHolder holder, int position) {
-        if (viewModel.getAllRhymePairs().getValue() != null) {
-            RhymePair pair = viewModel.getAllRhymePairs().getValue().get(position);
-
+    public void onBindViewHolder(SearchViewHolder holder, int position) {
+        if (viewModel.getRhymeList().getValue() != null) {
             TextView rhymeText = holder.itemView.findViewById(R.id.rhyme_text);
-            rhymeText.setText(pair.getWord() + " -> " + pair.getRhyme());
+            rhymeText.setText(viewModel.getRhymeList().getValue().get(position).wrd);
 
             ImageButton rhymeButton = holder.itemView.findViewById(R.id.rhyme_button);
-            rhymeButton.setImageResource(R.drawable.ic_favorite);
             rhymeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    rhymeButton.setImageResource(R.drawable.ic_favorite_border);
-                    viewModel.delete(pair);
+                    rhymeButton.setImageResource(R.drawable.ic_favorite);
+                    String rhyme = rhymeText.getText().toString();
+                    viewModel.insert(rhyme);
                 }
             });
         } else {
             TextView rhymeText = holder.itemView.findViewById(R.id.rhyme_text);
-            rhymeText.setText("Няма любими рими!");
+            rhymeText.setText("Няма рими или интернет!");
         }
     }
 
     @Override
     public int getItemCount() {
-        if (viewModel.getAllRhymePairs().getValue() != null)
-            return viewModel.getAllRhymePairs().getValue().size();
+        if (viewModel.getRhymeList().getValue() != null)
+            return viewModel.getRhymeList().getValue().size();
         else return 1;
     }
-
 }

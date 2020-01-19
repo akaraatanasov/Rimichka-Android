@@ -28,7 +28,7 @@ public abstract class RhymePairsDatabase extends RoomDatabase {
             synchronized (RhymePairsDatabase.class) {
                 if (dbInstance == null) {
                     dbInstance = Room.databaseBuilder(context.getApplicationContext(), RhymePairsDatabase.class, "rhyme_pairs_database")
-                            .addCallback(roomDatabaseCallback)
+//                            .addCallback(roomDatabaseCallback)
                             .build();
                 }
             }
